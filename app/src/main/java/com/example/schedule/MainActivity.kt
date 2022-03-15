@@ -2,6 +2,7 @@ package com.example.schedule
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 
@@ -17,8 +18,5 @@ class MainActivity : AppCompatActivity() {
         val navController = host.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
-
-
-
     }
 }

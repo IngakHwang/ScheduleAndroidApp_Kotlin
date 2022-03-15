@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.schedule.databinding.FragmentJoinBinding
+import com.google.gson.Gson
 
 class JoinFragment : Fragment() {
     lateinit var binding : FragmentJoinBinding
@@ -39,14 +41,14 @@ class JoinFragment : Fragment() {
         }
 
         binding.joinCheckbtn.setOnClickListener {
-
+            doJoin()
         }
     }
 
     fun checkID(){
         val joinID = binding.joinId.text.toString().trim()
 
-        val savedText = context?.getSharedPreferences("member", MODE_PRIVATE).getString(joinID,"true")
+        val savedText = context?.getSharedPreferences("member", MODE_PRIVATE)?.getString(joinID,"true")
 
         checkedID = if(savedText!="true"){
             AlertDialog.Builder(context).setMessage("중복된 아이디입니다.").setPositiveButton("확인",null).create().show()
@@ -59,8 +61,13 @@ class JoinFragment : Fragment() {
     }
 
     fun doJoin(){
+        val joinId = binding.joinId.text.toString().trim()
+        val joinPw = binding.joinPw.text.toString().trim()
+        val joinPwCheck = binding.joinPwcheck.text.toString().trim()
+        val joinMail = binding.joinMail.text.toString().trim()
+
         when{
-            binding.joinId.text.toString().trim().isEmpty() -> {
+            joinId.isEmpty() -> {
                 Toast.makeText(context,"아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 binding.joinId.requestFocus()
             }
@@ -70,14 +77,28 @@ class JoinFragment : Fragment() {
                 binding.joinId.requestFocus()
             }
 
-            binding.joinPw.text.toString().trim().isEmpty() -> {
+            joinPw.isEmpty() -> {
                 Toast.makeText(context,"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 binding.joinPw.requestFocus()
             }
 
-            binding.joinPw.text.toString().trim() != binding.joinPwcheck.text.toString().trim() -> {
+            joinPw != joinPwCheck -> {
                 Toast.makeText(context,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
                 binding.joinPw.requestFocus()
+            }
+
+            joinMail.isEmpty() -> {
+                Toast.makeText(context,"이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                binding.joinMail.requestFocus()
+            }
+            else -> {
+                val changeJSON = Gson().toJson(Member(joinId,joinPw,joinMail))
+
+                context?.getSharedPreferences("member", MODE_PRIVATE)?.edit()?.putString(joinId,changeJSON)?.commit()
+
+                Toast.makeText(context,"회원가입되었습니다.",Toast.LENGTH_SHORT).show()
+
+                findNavController().popBackStack()
             }
         }
     }

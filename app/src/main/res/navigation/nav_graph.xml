@@ -32,5 +32,13 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_addReminderFragment"
+            app:destination="@id/addReminderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addReminderFragment"
+        android:name="com.example.schedule.AddReminderFragment"
+        android:label="fragment_add_reminder"
+        tools:layout="@layout/fragment_add_reminder" />
 </navigation>

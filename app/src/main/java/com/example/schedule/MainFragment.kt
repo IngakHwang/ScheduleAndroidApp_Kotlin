@@ -1,7 +1,9 @@
 package com.example.schedule
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -25,9 +27,16 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("Kotlin", "ID - ${MainActivity.ID}")
+        val testText = arguments?.getString("title")
 
-        binding.mainTextView.text = arguments?.getString("inputID")
+        Log.d("Kotlin", "test - $testText")
 
+
+        binding.mainAddlist.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToAddReminderFragment()
+            findNavController().navigate(action)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -46,6 +55,7 @@ class MainFragment : Fragment() {
                     clear()
                     apply()
                 }
+                MainActivity.ID = ""
                 val action = MainFragmentDirections.actionMainFragmentToLoginFragment()
                 findNavController().navigate(action)
             }

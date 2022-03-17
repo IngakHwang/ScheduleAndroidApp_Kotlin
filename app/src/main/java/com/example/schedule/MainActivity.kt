@@ -9,6 +9,10 @@ import androidx.navigation.ui.AppBarConfiguration
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration : AppBarConfiguration
 
+    companion object{
+        var ID : String = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

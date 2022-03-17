@@ -49,6 +49,7 @@ class LoginFragment : Fragment() {
         val autoPW = shared?.getString("PW", null)
         if(autoID != null && autoPW != null){
             val bundle = bundleOf("inputID" to autoID)
+            MainActivity.ID = autoID
             findNavController().navigate(R.id.mainFragment, bundle)
         }
     }
@@ -95,7 +96,7 @@ class LoginFragment : Fragment() {
                 }
                 Toast.makeText(context,"$checkID 님 환영합니다.", Toast.LENGTH_SHORT).show()
                 val bundle = bundleOf("inputID" to checkID)
-
+                MainActivity.ID = checkID
                 findNavController().navigate(R.id.mainFragment, bundle)
             }
         }

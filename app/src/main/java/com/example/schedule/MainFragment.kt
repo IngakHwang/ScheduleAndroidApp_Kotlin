@@ -1,17 +1,29 @@
 package com.example.schedule
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.schedule.databinding.FragmentMainBinding
+import com.google.gson.Gson
+import java.util.*
 
 class MainFragment : Fragment() {
     lateinit var binding : FragmentMainBinding
+
+    val viewModel : MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,13 +37,21 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Kotlin", "ID - ${MainActivity.ID}")
-        val testText = arguments?.getString("title")
 
-        Log.d("Kotlin", "test - $testText")
+        val adapter = context?.let{MainAdapter(it)}
 
+        binding.mainRecView.layoutManager = LinearLayoutManager(context)
+        binding.mainRecView.adapter = adapter
+        binding.mainRecView.setHasFixedSize(true)
+
+        viewModel.liveDataItemList.observe(this, androidx.lifecycle.Observer {
+            adapter?.setData(it)
+            Log.d("Kotlin", "데이터사이즈 - ${it.size}")
+        })
 
         binding.mainAddlist.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToAddReminderFragment()
@@ -62,5 +82,15 @@ class MainFragment : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val gson = Gson().toJson(viewModel.getItemList())
+        context?.getSharedPreferences("${MainActivity.ID} reminder", Context.MODE_PRIVATE)
+            ?.edit()?.run {
+                putString(MainActivity.ID, gson)
+                apply()
+            }
     }
 }

@@ -36,6 +36,11 @@ class MainAdapter(var context: Context) : RecyclerView.Adapter<MainAdapter.ViewH
         return mainData.size
     }
 
+    fun setData(newData : MutableList<MainData>){
+        mainData = newData
+        notifyDataSetChanged()
+    }
+
     fun removeItem(position: Int) {
         mainData.removeAt(position)
         notifyItemRemoved(position)

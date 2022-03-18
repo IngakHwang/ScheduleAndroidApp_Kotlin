@@ -11,12 +11,16 @@ import android.view.ViewGroup
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.schedule.databinding.FragmentAddReminderBinding
 import java.util.*
 
 class AddReminderFragment : Fragment() {
     lateinit var binding : FragmentAddReminderBinding
+    val viewModel : MainViewModel by activityViewModels()
 
     var addImportant : String = ""
     var setDayTime : String = ""
@@ -59,7 +63,7 @@ class AddReminderFragment : Fragment() {
             TimePickerDialog(context, {
                     view, hourOfDay, mins ->
 
-                setMyTime = ("$hourOfDay}: $mins")
+                setMyTime = ("$hourOfDay : $mins")
                 binding.addreminderDate.setText("$setDayTime | $setMyTime")
             },hour,minute,true).show()
 
@@ -74,20 +78,17 @@ class AddReminderFragment : Fragment() {
         }
 
         binding.addreminderCheckbtn.setOnClickListener {
+            val list = MainData(
+                binding.addreminderTitle.text.toString(),
+                binding.addreminderMemo.text.toString(),
+                binding.addreminderLocation.text.toString(),
+                setDayTime,
+                setMyTime,
+                addImportant
+            )
+            viewModel.addItem(list)
 
-            val bundle = bundleOf(
-                "title" to binding.addreminderTitle.text.toString(),
-                "memo" to binding.addreminderMemo.text.toString(),
-                "location" to binding.addreminderLocation.text.toString(),
-                "date" to setDayTime,
-                "time" to setMyTime,
-                "important" to addImportant
-                )
-
-            findNavController().navigate(R.id.mainFragment,bundle)
-
-
-
+            findNavController().popBackStack()
 
         }
 

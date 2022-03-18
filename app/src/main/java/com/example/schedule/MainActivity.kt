@@ -3,11 +3,15 @@ package com.example.schedule
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration : AppBarConfiguration
+
+    lateinit var viewmodel : MainViewModel
 
     companion object{
         var ID : String = ""
@@ -16,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewmodel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val host = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
 

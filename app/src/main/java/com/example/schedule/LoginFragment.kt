@@ -2,6 +2,7 @@ package com.example.schedule
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.schedule.databinding.FragmentLoginBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.json.JSONException
 import org.json.JSONObject
 
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
+
+    val viewModel : MainViewModel by activityViewModels()
+    var loadData = mutableListOf<MainData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +36,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentLoginBinding.bind(view)
+
+        viewModel.removeAll()
 
         autoLogin()
 
@@ -50,6 +59,7 @@ class LoginFragment : Fragment() {
         if(autoID != null && autoPW != null){
             val bundle = bundleOf("inputID" to autoID)
             MainActivity.ID = autoID
+            loadData()
             findNavController().navigate(R.id.mainFragment, bundle)
         }
     }
@@ -97,7 +107,25 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context,"$checkID 님 환영합니다.", Toast.LENGTH_SHORT).show()
                 val bundle = bundleOf("inputID" to checkID)
                 MainActivity.ID = checkID
+                loadData()
                 findNavController().navigate(R.id.mainFragment, bundle)
+            }
+        }
+    }
+
+    private fun loadData(){
+        val loadJson = context?.getSharedPreferences("${MainActivity.ID} reminder", Context.MODE_PRIVATE)?.getString(MainActivity.ID, null)
+
+        Log.d("로그", "$loadJson")
+
+        when {
+            loadJson == null ->{ Log.d("로그", "Empty Data")}
+            else -> {
+                loadData  = Gson().fromJson(loadJson, object : TypeToken<MutableList<MainData>>(){}.type)
+
+                viewModel.setItemList(loadData)
+
+               Log.d("로그","Input Data")
             }
         }
     }

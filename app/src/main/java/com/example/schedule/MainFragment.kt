@@ -23,7 +23,7 @@ import java.util.*
 class MainFragment : Fragment() {
     lateinit var binding : FragmentMainBinding
 
-    val viewModel : MainViewModel by activityViewModels()
+    private val viewModel : MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,12 +51,46 @@ class MainFragment : Fragment() {
         viewModel.liveDataItemList.observe(this, androidx.lifecycle.Observer {
             adapter?.setData(it)
             Log.d("Kotlin", "데이터사이즈 - ${it.size}")
+            Log.d("Kotlin - Main", "데이터 항목 - $${it.toString()}")
         })
 
         binding.mainAddlist.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToAddReminderFragment()
             findNavController().navigate(action)
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.START or ItemTouchHelper.END
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return adapter!!.moveItem(viewHolder.adapterPosition, target.adapterPosition)
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                return adapter!!.removeItem(viewHolder.adapterPosition)
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if(actionState == ItemTouchHelper.ACTION_STATE_DRAG)
+                    viewHolder?.itemView?.setBackgroundColor(
+                        Color.LTGRAY
+                    )
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                viewHolder.itemView.setBackgroundColor(Color.WHITE)
+            }
+        }).attachToRecyclerView(binding.mainRecView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

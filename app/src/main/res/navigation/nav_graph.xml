@@ -35,10 +35,26 @@
         <action
             android:id="@+id/action_mainFragment_to_addReminderFragment"
             app:destination="@id/addReminderFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_todayFragment"
+            app:destination="@id/todayFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_importantFragment"
+            app:destination="@id/importantFragment" />
     </fragment>
     <fragment
         android:id="@+id/addReminderFragment"
         android:name="com.example.schedule.AddReminderFragment"
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder" />
+    <fragment
+        android:id="@+id/todayFragment"
+        android:name="com.example.schedule.TodayFragment"
+        android:label="fragment_today"
+        tools:layout="@layout/fragment_today" />
+    <fragment
+        android:id="@+id/importantFragment"
+        android:name="com.example.schedule.ImportantFragment"
+        android:label="fragment_important"
+        tools:layout="@layout/fragment_important" />
 </navigation>

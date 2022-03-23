@@ -27,7 +27,4 @@ class MainViewModel : ViewModel() {
         itemList.clear()
     }
 
-    fun sizeItem() : Int{
-        return itemList.size
-    }
 }

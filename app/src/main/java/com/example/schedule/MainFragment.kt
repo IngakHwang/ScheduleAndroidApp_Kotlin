@@ -39,7 +39,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Kotlin", "ID - ${MainActivity.ID}")
 
-        val adapter = context?.let{MainAdapter(it)}
+        val adapter = context?.let{context ->  MainAdapter(context)}
 
         binding.mainRecView.layoutManager = LinearLayoutManager(context)
         binding.mainRecView.adapter = adapter

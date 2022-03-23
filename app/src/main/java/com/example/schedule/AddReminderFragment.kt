@@ -36,7 +36,7 @@ class AddReminderFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("UseRequireInsteadOfGet")
+    @SuppressLint("UseRequireInsteadOfGet", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -63,13 +63,13 @@ class AddReminderFragment : Fragment() {
             TimePickerDialog(context, {
                     view, hourOfDay, mins ->
 
-                setMyTime = ("$hourOfDay : $mins")
-                binding.addreminderDate.setText("$setDayTime | $setMyTime")
+                setMyTime = ("$hourOfDay:$mins")
+                binding.addreminderDate.text = "$setDayTime $setMyTime"
             },hour,minute,true).show()
 
             DatePickerDialog(context!!, {
                 view, years, months, dayOfMonth ->
-                setDayTime = "$year / ${months+1} / ${dayOfMonth}"
+                setDayTime = "$year/${months+1}/${dayOfMonth}"
             },year,month,day).show()
         }
 

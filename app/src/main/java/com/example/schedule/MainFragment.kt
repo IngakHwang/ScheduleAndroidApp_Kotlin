@@ -66,6 +66,11 @@ class MainFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.mainTimerbtn.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToTimerStopWatchFragment()
+            findNavController().navigate(action)
+        }
+
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.START or ItemTouchHelper.END
@@ -108,7 +113,8 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.menu_item1 -> {
-                Toast.makeText(context,"프로필 대기 중",Toast.LENGTH_SHORT).show()
+                val action = MainFragmentDirections.actionMainFragmentToProfileFragment()
+                findNavController().navigate(action)
             }
             R.id.menu_item2 -> {
                 Toast.makeText(context,"로그아웃", Toast.LENGTH_SHORT).show()

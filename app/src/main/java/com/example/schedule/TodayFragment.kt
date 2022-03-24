@@ -63,7 +63,6 @@ class TodayFragment : Fragment() {
         Log.d(LOG, "오늘날짜 - $todayYear/$todayMonth/$todayDay")
 
         val loadData = viewModel.getItemList()
-        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         var i = 0
         while(i < loadData.size){

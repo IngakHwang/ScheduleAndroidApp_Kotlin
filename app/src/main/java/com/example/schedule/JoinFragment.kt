@@ -45,7 +45,7 @@ class JoinFragment : Fragment() {
         }
     }
 
-    fun checkID(){
+    private fun checkID(){
         val joinID = binding.joinId.text.toString().trim()
 
         val savedText = context?.getSharedPreferences("member", MODE_PRIVATE)?.getString(joinID,"true")
@@ -60,7 +60,7 @@ class JoinFragment : Fragment() {
         }
     }
 
-    fun doJoin(){
+    private fun doJoin(){
         val joinId = binding.joinId.text.toString().trim()
         val joinPw = binding.joinPw.text.toString().trim()
         val joinPwCheck = binding.joinPwcheck.text.toString().trim()
@@ -94,7 +94,7 @@ class JoinFragment : Fragment() {
             else -> {
                 val changeJSON = Gson().toJson(Member(joinId,joinPw,joinMail))
 
-                context?.getSharedPreferences("member", MODE_PRIVATE)?.edit()?.putString(joinId,changeJSON)?.commit()
+                context?.getSharedPreferences("member", MODE_PRIVATE)?.edit()?.putString(joinId,changeJSON)?.apply()
 
                 Toast.makeText(context,"회원가입되었습니다.",Toast.LENGTH_SHORT).show()
 

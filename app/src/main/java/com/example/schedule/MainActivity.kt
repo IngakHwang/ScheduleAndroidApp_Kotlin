@@ -1,5 +1,6 @@
 package com.example.schedule
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -28,5 +29,16 @@ class MainActivity : AppCompatActivity() {
         val navController = host.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
+
+        appBarConfiguration = AppBarConfiguration(
+            supportFragmentManager.findFragmentById(R.id.myNavHostFragment)
+                .let { fragment ->
+                    (fragment as NavHostFragment).navController.graph
+                }
+        )
     }
+
+//    fun getPref(prefName:String) = getSharedPreferences(prefName,Context.MODE_PRIVATE)
+//    fun getPrefEditor(prefName:String) = getPref(prefName).edit()
 }
